@@ -15,6 +15,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     });
   }
 
+
+
+
   Future<void> _onStartTask( event, emit) async {
     emit(state.copyWith(isLoading: true, progress: 0, isCompleted: false));
 

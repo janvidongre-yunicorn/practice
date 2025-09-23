@@ -3,34 +3,70 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'isolate/home_screen.dart';
-import 'isolate/profile_page.dart';
-import 'isolate_bloc/task_bloc.dart';
-
+import 'flutter_widgets/Animation/align_transition.dart';
+import 'flutter_widgets/Animation/card_animation.dart';
+import 'flutter_widgets/Animation/sliver.dart';
+import 'flutter_widgets/popup/custom _popup.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
-
-// 🔹 Global StreamController for task completion
-//final StreamController<bool> taskDoneController = StreamController.broadcast();
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TaskBloc(),
-      child: MaterialApp(
-        title: 'Bloc Isolate',
-        home: HomePage(),
-        routes: {'/profile': (_) => ProfilePage()},
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Bloc Isolate',
+      home: ParallaxDemo(),
+
     );
   }
 }
+
+
+
+
+
+
+
+// import 'dart:async';
+
+
+// import 'dart:isolate';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+//
+// import 'isolate/home_screen.dart';
+// import 'isolate/profile_page.dart';
+// import 'isolate_bloc/task_bloc.dart';
+//
+//
+// void main() {
+//   runApp(MyApp());
+// }
+//
+// // 🔹 Global StreamController for task completion
+// //final StreamController<bool> taskDoneController = StreamController.broadcast();
+//
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) => TaskBloc(),
+//       child: MaterialApp(
+//         title: 'Bloc Isolate',
+//         home: HomePage(),
+//         routes: {'/profile': (_) => ProfilePage()},
+//       ),
+//     );
+//   }
+// }
 
 
 
@@ -270,11 +306,11 @@ class MyApp extends StatelessWidget {
 //   bloc.stream.listen((state) {
 //     switch (state) {
 //       case AuthLoading():
-//         print("⏳ Logging in...");
+//         print("Logging in...");
 //       case AuthSuccess s:
-//         print("✅ Login Success! User: ${s.userId}");
+//         print(" Login Success! User: ${s.userId}");
 //       case AuthError e:
-//         print("❌ Login Failed: ${e.message}");
+//         print(" Login Failed: ${e.message}");
 //     }
 //   });
 //
