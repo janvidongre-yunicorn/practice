@@ -1,94 +1,91 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PlatformDatePicker extends StatefulWidget {
-  final bool isDarkTheme;
-  final bool useIOS; // 👈 yeh tum control karogi
-
-  const PlatformDatePicker({
-    super.key,
-    this.isDarkTheme = false,
-    this.useIOS = false, // default Android
-  });
-
+class DatePicker extends StatefulWidget {
   @override
-  State<PlatformDatePicker> createState() => _PlatformDatePickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _PlatformDatePickerState extends State<PlatformDatePicker> {
+class _DatePickerState extends State<DatePicker> {
   DateTime? selectedDate;
+bool _isDarkTheme =false;
+  _pickDate() async {
+    DateTime? picked = await showDatePicker(
+      builder: (context, child) {
+        return Theme(
+          data: _isDarkTheme
+              ? ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
 
-  void _pickDate(BuildContext context) async {
-    if (widget.useIOS) {
-      // ✅ Cupertino Date Picker (iOS style)
-      showCupertinoModalPopup(
-        context: context,
-        builder: (_) => Container(
-          height: 250,
-          color: widget.isDarkTheme ? Colors.black : Colors.white,
-          child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.date,
-            initialDateTime: selectedDate ?? DateTime.now(),
-            minimumDate: DateTime(2000),
-            maximumDate: DateTime(2100),
-            onDateTimeChanged: (DateTime date) {
-              setState(() => selectedDate = date);
-            },
-          ),
-        ),
-      );
-    } else {
-      // ✅ Material Date Picker (Android style)
-      DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate ?? DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        builder: (context, child) {
-          return Theme(
-            data: widget.isDarkTheme
-                ? ThemeData.dark().copyWith(
-              colorScheme: const ColorScheme.dark(
-                primary: Colors.teal,
-                onPrimary: Colors.white,
-                surface: Colors.black,
-                onSurface: Colors.white,
-              ),
-              dialogBackgroundColor: Colors.grey.shade900,
-            )
-                : ThemeData.light().copyWith(
-              colorScheme: const ColorScheme.light(
-                primary: Colors.blue,
-                onPrimary: Colors.white,
-                surface: Colors.white,
-                onSurface: Colors.black,
-              ),
-              dialogBackgroundColor: Colors.white,
+              primary: Colors.teal,
+              onPrimary: Colors.white,
+              surface: Colors.black,
+              onSurface: Colors.white,
             ),
+            dialogBackgroundColor: Colors.grey.shade900,
+          )
+              : ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: child!,
-          );
-        },
-      );
-      if (picked != null) {
-        setState(() => selectedDate = picked);
-      }
+          ),
+
+        );
+
+      },
+
+       context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(selectedDate == null
-            ? "No Date Selected"
-            : "Selected: ${selectedDate!.toLocal()}"),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () => _pickDate(context),
-          child: Text(widget.useIOS ? "Pick iOS Date" : "Pick Android Date"),
+    return Scaffold(
+      appBar: AppBar(title: Text("DatePicker")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(selectedDate == null
+                ? "No Date"
+                : "selected: ${selectedDate!.toLocal()}"),
+            ElevatedButton(
+              onPressed: _pickDate,
+              child: Text("Pick Date"),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Light Theme"),
+                Switch(
+                  value: _isDarkTheme,
+                  onChanged: (val) {
+                    setState(() => _isDarkTheme = val);
+                  },
+                ),
+                const Text("Dark Theme"),
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

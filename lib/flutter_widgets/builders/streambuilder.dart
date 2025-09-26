@@ -31,25 +31,25 @@ class _StreamBuilderPageState extends State<StreamBuilderPage> {
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 10),
-                  Text("====Waiting for data..."),
+                  Text("⏳ Waiting for data..."),
                 ],
               );
             }
 
             // ========= Error state
             if (snapshot.hasError) {
-              return Text("/////////// Error: ${snapshot.error}");
+              return Text("❌ Error: ${snapshot.error}");
             }
 
             // =====Done state (stream completed)
             if (snapshot.connectionState == ConnectionState.done) {
-              return Text("*************Stream Finished", style: TextStyle(fontSize: 22));
+              return Text("✅ Stream Finished", style: TextStyle(fontSize: 22));
             }
 
             // ===========Active state (data received)
             if (snapshot.hasData) {
               return Text(
-                "+++++++++++ Current Value: ${snapshot.data}",
+                "📌 Current Value: ${snapshot.data}",
                 style: TextStyle(fontSize: 24),
               );
             }
